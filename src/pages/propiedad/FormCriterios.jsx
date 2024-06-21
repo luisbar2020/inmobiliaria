@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { getData } from '../../utils/getData'; 
-const FormCriterios = () => {
+const FormCriterios = ({ onSubmit }) => {
     // Estado para almacenar las localidades obtenidas de la API
     const [localidades, setLocalidades] = useState([]);
 
@@ -10,42 +10,44 @@ const FormCriterios = () => {
         getData("http://localhost/localidades", setLocalidades);
     }, []);
 
-    const {  handleSubmit } = useForm();
+    const {errors,  register,  handleSubmit } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data); // Aquí se pueden realizar acciones con los datos del formulario
-    };
+    
 
     return (
         <div>
             <h3>FILTRAR</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
                 
-                    
+                 <label>
+                    Cantidad de huespuedes  
                     <input
                     type='number'
-                    name="cantidadHuespedes"
+                    name="cantidad_huespedes"
                     placeholder='Ingrese número de huéspedes'
-
+                    {...register('cantidad_huespedes')}
                     ></input>
-                
+                    
+                </label> 
                 <label>
                     Disponible
                     <input
                         type='checkbox'
                         name='disponible'
-                        
+                        {...register('disponible')}
                     />
                 </label>
                 <label>
                     Fecha
                     <input
                         type='date'
-                        name='fecha'
-                       
+                        name='fecha_inicio_disponibilidad'
+                        {...register('fecha_inicio_disponibilidad')}
                     />
                 </label>
-                <select>
+                <select name='localidad'
+                 {...register('localidad')}
+                >
                     <option value=''>Seleccionar Localidad</option>
                     {localidades.map(localidad => (
                         <option key={localidad.id} value={localidad.nombre}>{localidad.nombre}</option>
