@@ -4,7 +4,7 @@ import TipoPropiedadPage from './pages/tipo_Propiedad/TipoPropiedadPage';
 import NewTipoPropiedad from './pages/tipo_Propiedad/NewTipoPropiedad';
 import PropiedadPage from './pages/propiedad/PropiedadPage';
 import NewPropiedad from './pages/propiedad/NewPropiedad';
-import DetallesPropiedad from './pages/propiedad/ModalDetalles';
+import DetallesPropiedad from './pages/propiedad/DetailPropiedad';
 
 
 const App= () => {
