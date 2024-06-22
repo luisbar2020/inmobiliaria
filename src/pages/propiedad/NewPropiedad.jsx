@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react'
 import { useForm } from 'react-hook-form'
 import {getData} from '../../utils/getData';
 import '../../assets/styles/NewPropiedad.css'
+import postData from '../../utils/postData';
 
 
 const NewPropiedad = () => {
@@ -14,10 +15,15 @@ const NewPropiedad = () => {
     }, []);
 
 
-  const {register, handleSubmit} = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-  }
+   const {register, handleSubmit} = useForm();
+
+   const onSubmit = (data) => {
+      const url = "http://localhost/propiedad";
+      const respuesta = postData(url,data) 
+      
+      alert (respuesta);
+   }
+   
 
 
 
@@ -34,13 +40,16 @@ const NewPropiedad = () => {
                 </label>
                 <label>
                     Localidad :
-                    <select name='localidad'
+                    <input type="number"
+                    name='localidad_id'
+                    {...register('localidad_id')} />
+                    {/* <select name='localidad'
                     {...register('localidad')} key={localidades.id}>
                     <option value=''>Seleccionar Localidad</option>
                         {localidades.map(localidad => (
                             <option key={localidad.id} value={localidad.nombre}>{localidad.nombre}</option>
                         ))}
-                    </select>
+                    </select> */}
                 </label>
                 <label>
                     Cantidad de habitaciones :
@@ -56,7 +65,7 @@ const NewPropiedad = () => {
                 </label>
                 <label>
                     Cochera :
-                    <input type="checkBox"
+                    <input type="number"
                     name='cochera'
                     {...register('cochera')} />
                 </label>
@@ -68,7 +77,7 @@ const NewPropiedad = () => {
                 </label>
                 <label>
                     Fecha de inicio de disponibilidad :
-                    <input type="date"
+                    <input type="text"
                     name='fecha_inicio_disponibilidad'
                     {...register('fecha_inicio_disponibilidad')} />
                 </label>
@@ -80,31 +89,40 @@ const NewPropiedad = () => {
                 </label>
                 <label>
                     Disponible :
-                    <input type="checkBox"
+                    <input type="number"
                     name='disponible'
                     {...register('disponible')} />
                 </label>
                 <label>
                     Valor por noche $:
-                    <input type="text"
+                    <input type="number"
                     name='valor_noche'
                     {...register('valor_noche')} />
                 </label>
                 <label>
                     Tipo de propiedad :
-                    <select name='tipo_propiedad'
+                    <input type="number"
+                    name='tipo_propiedad_id'
+                    {...register('tipo_propiedad_id')} />
+                    {/* <select name='tipo_propiedad'
                     {...register('tipo_propiedad')} key={tipoPropiedades.id}>
                     <option value=''>Selecionar tipo de propiedad</option>
                         {tipoPropiedades.map(tipoPropiedades => (
                             <option key={tipoPropiedades.id} value={tipoPropiedades.nombre}>{tipoPropiedades.nombre}</option>
                         ))}
-                    </select>
+                    </select> */}
                 </label>
                 <label>
                     Imagen :
-                    <input type="file"
+                    <input type="text"
                     name='imagen'
                     {...register('imagen')} />
+                </label>
+                <label>
+                    tipoImagen :
+                    <input type="text"
+                    name='tipo_imagen'
+                    {...register('tipo_imagen')} />
                 </label>
                 <button type='submit'>Crear Propiedad</button>
             </div>
