@@ -8,7 +8,8 @@ const setData = async (url,datos) => {
                 'Content-Type': 'application/json'
             }
         });
-        return respuesta.data; 
+        console.log(datos);
+        return respuesta.data.mensaje; 
         
     } catch (error) {
         console.error('Error al actualizar los datos:', error);

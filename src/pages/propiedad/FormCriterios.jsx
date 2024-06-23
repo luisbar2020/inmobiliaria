@@ -10,7 +10,7 @@ const FormCriterios = ({ onSubmit }) => {
         getData("http://localhost/localidades", setLocalidades);
     }, []);
 
-    const {errors,  register,  handleSubmit } = useForm();
+    const { register,  handleSubmit } = useForm();
 
     
 
@@ -45,14 +45,15 @@ const FormCriterios = ({ onSubmit }) => {
                         {...register('fecha_inicio_disponibilidad')}
                     />
                 </label>
-                <select name='localidad'
-                 {...register('localidad')}
+                <select name='localidad_id' 
+                 {...register('localidad_id')}
                 >
-                    <option value=''>Seleccionar Localidad</option>
+                    <option value='' >Seleccionar Localidad</option>
                     {localidades.map(localidad => (
-                        <option key={localidad.id} value={localidad.nombre}>{localidad.nombre}</option>
+                        <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
                     ))}
                 </select>
+                
                 <button type='submit'>Buscar</button>
             </form>
         </div>

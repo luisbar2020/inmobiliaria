@@ -1,11 +1,18 @@
 import React, { useState, useEffect }  from 'react';
 import Modal from 'react-modal';
 import setData from '../../utils/setData' 
-
+import { getData } from '../../utils/getData';
+import '../../assets/styles/propiedadStyles.css'
 
 const EditPropiedad = ({ isOpen, onRequestClose, propiedad }) => {
           
-    
+    const [localidades, setLocalidades] = useState([]);
+    const [tipoPropiedades, setTipoPropiedades] = useState([]);
+    useEffect(() => {
+        // Obtener las localidades al cargar el componente
+        getData("http://localhost/localidades", setLocalidades);
+        getData("http://localhost/tipos_propiedad", setTipoPropiedades);
+    }, []);
     const [formData, setFormData] = useState({
             domicilio: '',
             localidad_id: '',
@@ -29,7 +36,7 @@ const EditPropiedad = ({ isOpen, onRequestClose, propiedad }) => {
             setFormData({
                 domicilio: propiedad.domicilio || '',
                 localidad_id: propiedad.localidad_id || '',
-                disponible: propiedad.disponible || '',
+                disponible: propiedad.disponible ,
                 valor_noche: propiedad.valor_noche || '',
                 tipo_propiedad_id: propiedad.tipo_propiedad_id || '',
                 fecha_inicio_disponibilidad: propiedad.fecha_inicio_disponibilidad,
@@ -44,10 +51,10 @@ const EditPropiedad = ({ isOpen, onRequestClose, propiedad }) => {
         }
     }, [propiedad]);
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, type, checked, value } = e.target;
         setFormData({
             ...formData,
-            [name]: value 
+            [name]: type === 'checkbox' ? checked : value
         });
     };
     const handleSubmit = async (e) => {
@@ -55,8 +62,8 @@ const EditPropiedad = ({ isOpen, onRequestClose, propiedad }) => {
         const url= `http://localhost/propiedad/${propiedad.id}` ;
         const response= await setData(url,formData);
         console.log(response);
-        const mensaje = response.data?.mensaje || 'Operación exitosa';
-         alert(`Respuesta del servidor: ${mensaje}`);
+        
+         alert(`Respuesta del servidor: ${response}`);
         onRequestClose();
         window.location.reload();
     }
@@ -82,13 +89,17 @@ const EditPropiedad = ({ isOpen, onRequestClose, propiedad }) => {
                 />
             </div>
             <div>
-                <label>ID Localidad:</label>
-                <input
-                    type="text"
-                    name="localidad_id"
+                <label>Localidad:</label>
+                <select
+                    name='localidad_id' 
                     value={formData.localidad_id}
                     onChange={handleChange}
-                />
+                >
+                    <option value='' disabled selected>Seleccionar Localidad</option>
+                    {localidades.map(localidad => (
+                        <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
+                    ))}
+                </select>
             </div>
             <div>
                 <label>Cantidad de Habitaciones:</label>
@@ -111,8 +122,9 @@ const EditPropiedad = ({ isOpen, onRequestClose, propiedad }) => {
             <div>
                 <label>Cochera:</label>
                 <input
-                    type="text"
+                    type="checkbox"
                     name="cochera"
+                    checked={formData.cochera}
                     value={formData.cochera}
                     onChange={handleChange}
                 />
@@ -147,8 +159,9 @@ const EditPropiedad = ({ isOpen, onRequestClose, propiedad }) => {
             <div>
                 <label>Disponible:</label>
                 <input
-                    type="text"
+                    type="checkbox"
                     name="disponible"
+                    checked={formData.disponible}
                     value={formData.disponible}
                     onChange={handleChange}
                 />
@@ -163,13 +176,17 @@ const EditPropiedad = ({ isOpen, onRequestClose, propiedad }) => {
                 />
             </div>
             <div>
-                <label>ID Tipo Propiedad:</label>
-                <input
-                    type="text"
-                    name="tipo_propiedad_id"
+                <label>Tipo de propiedad:</label>
+                <select
+                    name='tipo_propiedad_id' 
                     value={formData.tipo_propiedad_id}
                     onChange={handleChange}
-                />
+                >
+                    <option value=''disabled selected>Tipo de propiedad</option>
+                    {tipoPropiedades.map(tipo => (
+                        <option key={tipo.id} value={tipo.id}>{tipo.nombre}</option>
+                    ))}
+                </select>
             </div>
             <div>
                 <label>Cantidad de Huéspedes:</label>
